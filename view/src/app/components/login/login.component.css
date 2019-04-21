@@ -1,0 +1,37 @@
+.bg-color {
+    background-color: #0047B9;
+    min-height: 97.4vh;
+    overflow: hidden;
+}
+
+.button-color {
+    background-color: #FDDB00;
+    color: #0047B9;
+    font-weight: bold;
+}
+
+.logo {
+    background-image: url(../../../assets/images/eComindo_0.png);
+    width: auto;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 100px;
+}
+
+.input-style {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.input-style::placeholder,
+.input-style::content {
+    color: black;
+    padding: 5px;
+}
+
+.has-error input[type="email"],
+.has-error input[type="password"] {
+    border-color: rgb(216, 12, 12);
+}

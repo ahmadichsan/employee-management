@@ -1,39 +1,67 @@
 package com.app.employeemanagement.dto;
 
+import java.util.Date;
+
 public class LoginResDto {
-	private String username;
-    private int age;
+    
+    private String name;
+    private String gender;
+    private Date dob;
+    private String address;
     private long salary;
     private RoleDto role;
+    private UnitDto unit;
+    private String email;
     private String token;
     
     public LoginResDto() {
     	
     }
-    
-	public LoginResDto(String username, int age, long salary, RoleDto role, String token) {
+
+	public LoginResDto(String name, String gender, Date dob, String address, long salary, RoleDto role, UnitDto unit,
+			String email, String token) {
 		super();
-		this.username = username;
-		this.age = age;
+		this.name = name;
+		this.gender = gender;
+		this.dob = dob;
+		this.address = address;
 		this.salary = salary;
 		this.role = role;
+		this.unit = unit;
+		this.email = email;
 		this.token = token;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getAge() {
-		return age;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public long getSalary() {
@@ -52,6 +80,22 @@ public class LoginResDto {
 		this.role = role;
 	}
 
+	public UnitDto getUnit() {
+		return unit;
+	}
+
+	public void setUnit(UnitDto unit) {
+		this.unit = unit;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public String getToken() {
 		return token;
 	}

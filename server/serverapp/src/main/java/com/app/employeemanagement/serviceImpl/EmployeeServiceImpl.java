@@ -14,23 +14,16 @@ import com.app.employeemanagement.dto.RegisterDto;
 import com.app.employeemanagement.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.transaction.Transactional;
 
-
 @Service(value = "employeeService")
-public class EmployeeServiceImpl implements UserDetailsService, EmployeeService {
-//public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
 	private EmployeeDao employeeDao;
@@ -43,22 +36,6 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
 
 	@Autowired
 	private BCryptPasswordEncoder bcryptEncoder;
-
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//		Login employee = loginDao.findByEmail(username);
-//		if(employee == null){
-//			throw new UsernameNotFoundException("Invalid username or password.");
-//		}
-//		return new org.springframework.security.core.userdetails.User(employee.getEmail(), employee.getPassword(), getAuthority(employee));
-		return null;
-	}
-
-	private Set<SimpleGrantedAuthority> getAuthority(Employee user) {
-//        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-//        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName()));
-//        return authorities;
-		return null;
-	}
 	
 	@Override
 	@Transactional(rollbackOn = {Exception.class})
@@ -116,24 +93,62 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     }
 	
 	@Override
-	public Employee findById(Long id) {
-		return employeeDao.findById(id).get();
+	public EmployeeDto findById(Long id) throws Exception {
+		Employee employee = new Employee();
+		EmployeeDto employeeDto = new EmployeeDto();
+		try {
+			employee = employeeDao.findById(id).get();
+			BeanUtils.copyProperties(employee, employeeDto, "role", "unit", "login");
+			employeeDto.setRole(employee.getRole().getId());
+			employeeDto.setUnit(employee.getRole().getId());
+			employeeDto.setLogin(employee.getLogin().getId());	
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		return employeeDto;
 	}
 
 	@Override
-	public List<Employee> findAll() {
+	public List<EmployeeDto> findAll() throws Exception {
 		List<Employee> list = new ArrayList<>();
-		employeeDao.findAll().iterator().forEachRemaining(list::add);
-		return list;
+		List<EmployeeDto> employeeListDto = new ArrayList<>();
+		
+		try {
+			employeeDao.findAll().iterator().forEachRemaining(list::add);
+			
+			for (Employee listEmp : list) {
+		        EmployeeDto employeeDto = new EmployeeDto();
+				BeanUtils.copyProperties(listEmp, employeeDto, "role", "unit", "login");
+				employeeDto.setRole(listEmp.getRole().getId());
+				employeeDto.setUnit(listEmp.getRole().getId());
+				employeeDto.setLogin(listEmp.getLogin().getId());
+		        employeeListDto.add(employeeDto);
+		    }
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		return employeeListDto;
 	}
 	
 	@Override
+	@Transactional(rollbackOn = {Exception.class})
 	public Employee update(Long id, EmployeeDto employeeDto) throws Exception {
 		Employee employee;
 		try {
 			employee = employeeDao.findById(id).get();
 			BeanUtils.copyProperties(employeeDto, employee);
 			employeeDao.save(employee);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		return employee;
+	}
+	
+	@Override
+	public Employee findByLoginId(Long id) throws Exception {
+		Employee employee;
+		try {
+			employee = employeeDao.findByLoginId(id).get();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

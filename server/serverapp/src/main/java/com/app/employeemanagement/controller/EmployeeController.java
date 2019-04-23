@@ -1,6 +1,5 @@
 package com.app.employeemanagement.controller;
 
-import com.app.employeemanagement.model.Employee;
 import com.app.employeemanagement.dto.EmployeeDto;
 import com.app.employeemanagement.dto.RegisterDto;
 import com.app.employeemanagement.service.EmployeeService;
@@ -14,25 +13,27 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/employee")
 public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
 
-	@PreAuthorize("hasRole('admin')")
-	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public List<Employee> listUser() {
+	@PreAuthorize("hasRole('ADMIN')")
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public List<EmployeeDto> findAll() throws Exception {
 		return employeeService.findAll();
 	}
 
-	@PreAuthorize("hasRole('staff')")
-	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public Employee getOne(@PathVariable(value = "id") Long id) {
+	@PreAuthorize("hasRole('USER')")
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public EmployeeDto findById(@PathVariable(value = "id") Long id) throws Exception {
 		return employeeService.findById(id);
 	}
 
-	@RequestMapping(value = "/add-employee", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
+	@PreAuthorize("hasRole('USER')")
+	@RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> save(@RequestBody RegisterDto registerDto) {
 		try {
 			if (!"MALE".equals(registerDto.getGender()) && !"FEMALE".equals(registerDto.getGender())) {
 				return ResponseEntity.badRequest().body("unknown keyword for the gender");
@@ -44,8 +45,9 @@ public class EmployeeController {
 		}
 	}
 	
-	@RequestMapping(value = "/edit-employee/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> upadte(@PathVariable(value = "id") Long id, @RequestBody EmployeeDto employeeDto) {
+	@PreAuthorize("hasRole('SUPER_ADMIN')")
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody EmployeeDto employeeDto) {
 		try {
 			employeeService.update(id, employeeDto);
 			return ResponseEntity.ok().body("update done");

@@ -9,16 +9,16 @@ public class EmployeeDto {
     private Date dob;
     private String address;
     private long salary;
-    private int role;
-    private int unit;
-    private int login;
+    private Long role;
+    private Long unit;
+    private Long login;
     
     public EmployeeDto() {
     	
     }
 
-	public EmployeeDto(String name, String gender, Date dob, String address, long salary, int role, int unit,
-			int login) {
+	public EmployeeDto(String name, String gender, Date dob, String address, long salary, Long role, Long unit,
+			Long login) {
 		super();
 		this.name = name;
 		this.gender = gender;
@@ -70,27 +70,27 @@ public class EmployeeDto {
 		this.salary = salary;
 	}
 
-	public int getRole() {
+	public Long getRole() {
 		return role;
 	}
 
-	public void setRole(int role) {
+	public void setRole(Long role) {
 		this.role = role;
 	}
 
-	public int getUnit() {
+	public Long getUnit() {
 		return unit;
 	}
 
-	public void setUnit(int unit) {
+	public void setUnit(Long unit) {
 		this.unit = unit;
 	}
 
-	public int getLogin() {
+	public Long getLogin() {
 		return login;
 	}
 
-	public void setLogin(int login) {
+	public void setLogin(Long login) {
 		this.login = login;
 	}
 }

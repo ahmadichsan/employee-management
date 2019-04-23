@@ -11,14 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeDao extends JpaRepository<Employee, Long> {
     
-    // add employee
-    
-    // get all employee
-    
-    // get employee detail/by id
 	Optional<Employee> findById(Long id);
-    
-    // edit employee
-    
-    // delete employee => resign employee
+	
+	Optional<Employee> findByLoginId(Long id);
 }

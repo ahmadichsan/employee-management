@@ -5,15 +5,16 @@ import com.app.employeemanagement.dto.EmployeeDto;
 import com.app.employeemanagement.dto.RegisterDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface EmployeeService {
 
     Employee save(RegisterDto user) throws Exception;
 
-    List<Employee> findAll();
+    List<EmployeeDto> findAll() throws Exception;
 
-    Employee findById(Long id);
+    EmployeeDto findById(Long id) throws Exception;
     
     Employee update(Long id, EmployeeDto employeeDto) throws Exception;
+    
+    Employee findByLoginId(Long id) throws Exception;
 }
